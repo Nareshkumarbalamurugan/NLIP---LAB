@@ -1,0 +1,91 @@
+import math
+from collections import Counter
+
+# Sample documents
+documents = [
+    "machine learning is fun",
+    "machine learning and data science",
+    "deep learning for artificial intelligence"
+]
+
+query = "machine learning"
+
+# -----------------------------
+# Step 1: Tokenization
+# -----------------------------
+docs_tokens = [doc.split() for doc in documents]
+query_tokens = query.split()
+
+# -----------------------------
+# Step 2: Term Frequency (TF)
+# -----------------------------
+def compute_tf(tokens):
+    tf = Counter(tokens)
+    total = len(tokens)
+    for word in tf:
+        tf[word] = tf[word] / total
+    return tf
+
+tf_docs = [compute_tf(doc) for doc in docs_tokens]
+
+print("TF values:")
+for tf in tf_docs:
+    print(tf)
+
+# -----------------------------
+# Step 3: Inverse Document Frequency (IDF)
+# -----------------------------
+N = len(documents)
+
+idf = {}
+all_words = set(word for doc in docs_tokens for word in doc)
+
+for word in all_words:
+    count = sum(1 for doc in docs_tokens if word in doc)
+    idf[word] = math.log(N / count)
+
+print("\nIDF values:")
+print(idf)
+
+# -----------------------------
+# Step 4: TF-IDF
+# -----------------------------
+def compute_tfidf(tf, idf):
+    tfidf = {}
+    for word in tf:
+        tfidf[word] = tf[word] * idf[word]
+    return tfidf
+
+tfidf_docs = [compute_tfidf(tf, idf) for tf in tf_docs]
+
+print("\nTF-IDF values:")
+for tfidf in tfidf_docs:
+    print(tfidf)
+
+# -----------------------------
+# Step 5: Cosine Similarity
+# -----------------------------
+def cosine_similarity(vec1, vec2):
+    intersection = set(vec1.keys()) & set(vec2.keys())
+    
+    numerator = sum(vec1[x] * vec2[x] for x in intersection)
+    
+    sum1 = sum(v**2 for v in vec1.values())
+    sum2 = sum(v**2 for v in vec2.values())
+    
+    denominator = math.sqrt(sum1) * math.sqrt(sum2)
+    
+    if denominator == 0:
+        return 0
+    
+    return numerator / denominator
+
+# Query TF-IDF
+query_tf = compute_tf(query_tokens)
+query_tfidf = compute_tfidf(query_tf, idf)
+
+print("\nCosine Similarity with Query:")
+
+for i, doc in enumerate(tfidf_docs):
+    sim = cosine_similarity(query_tfidf, doc)
+    print(f"Document {i+1} similarity:", sim)

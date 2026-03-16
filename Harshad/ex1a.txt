@@ -1,0 +1,37 @@
+import torch
+from nltk.corpus import stopwords
+import string
+from collections import Counter
+
+# Sample text
+text = """
+Natural language processing is a field of artificial intelligence.
+Natural language processing helps computers understand human language.
+"""
+
+# 1. Word Tokenization
+tokens = text.lower().split()
+
+print("Tokens:")
+print(tokens)
+
+# 2. Remove punctuation
+tokens_no_punct = [word.strip(string.punctuation) for word in tokens if word.strip(string.punctuation)]
+
+print("\nAfter punctuation removal:")
+print(tokens_no_punct)
+
+# 3. Remove stopwords
+stop_words = set(stopwords.words("english"))
+filtered_words = [word for word in tokens_no_punct if word not in stop_words]
+
+print("\nAfter stopword removal:")
+print(filtered_words)
+
+# 4. Topical word extraction using frequency
+word_freq = Counter(filtered_words)
+
+top_words = word_freq.most_common(5)
+
+print("\nTopical words:")
+print(top_words)

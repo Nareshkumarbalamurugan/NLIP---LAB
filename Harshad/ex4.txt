@@ -1,0 +1,20 @@
+responses = {
+    "hi": "Hello!",
+    "hello": "Hi there!",
+    "how are you?": "I am fine!",
+    "what is your name?": "I am a simple chatbot!",
+    "bye": "Goodbye"
+}
+while True:
+    user = input("You: ").lower();
+    found = False
+    for key in responses:
+        if user == key:
+            print("Bot: ",responses[key])
+            found = True
+            if key == "bye":
+                break
+    if not found:
+        print("Bot: I don't understand")
+    if user == "bye":
+        break

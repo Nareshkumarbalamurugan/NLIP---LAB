@@ -1,0 +1,21 @@
+import nltk
+nltk.download('punkt')
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from collections import Counter
+nltk.download('stopwords')
+import string
+
+text ="this is a example text to test the word frequency counter function.this function will count the frequency of the words in the given text"
+tokens=word_tokenize(text)
+print("tokens:",tokens)
+
+stop_words = set(stopwords.words('english'))
+filtered_tokens=[word for word in tokens if word.lower() not in stop_words ]
+print("filtered_tokens:",filtered_tokens)
+
+words_with_no_punctuation=[word for word in filtered_tokens if word not in string.punctuation]
+print("words_with_no_punctuation:",words_with_no_punctuation)
+
+topical_words=Counter(words_with_no_punctuation).most_common(5)
+print("topical_words:",topical_words)

@@ -1,0 +1,7 @@
+#pip install deep-translator
+from deep_translator import GoogleTranslator
+text = "Hi,This is vishva"
+translated = GoogleTranslator(source="auto",target="ta").translate(text)
+
+print("Original text: ",text)
+print("Translated text to tamil: ",translated)

@@ -1,0 +1,20 @@
+#pip install scikit-learn
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+texts = [
+    "I love this movie",
+    "This is amazing",
+    "I hate this",
+    "This is terrible"
+]
+
+labels = ["positive", "positive", "negative", "negative"]
+
+vectorizer = CountVectorizer()
+x = vectorizer.fit_transform(texts)
+model = MultinomialNB()
+model.fit(x,labels)
+test = vectorizer.transform(["He is a terrible person"])
+pred = model.predict(test)
+print("Prediction: ",pred[0])
